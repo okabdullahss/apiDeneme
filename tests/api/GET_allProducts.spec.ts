@@ -1,6 +1,4 @@
 import {test, expect, request} from '@playwright/test'
-
-const baseUrl = process.env.API_BASE_URL;
  
 
 test.describe("Products API", () => {
@@ -8,7 +6,7 @@ test.describe("Products API", () => {
 
     test('should get all the product list & validate response', async ({request}) => {
     
-    const response = (await request.get(`${baseUrl}/api/productsList`));
+    const response = (await request.get(`/api/productsList`));
 
     expect(response.status()).toBe(200);
 
@@ -28,7 +26,7 @@ test.describe("Products API", () => {
     'search_product': 'top'
      }
 
-    const response = await request.post(`${baseUrl}/api/searchProduct`, {
+    const response = await request.post(`/api/searchProduct`, {
       form: data,
     });
 
