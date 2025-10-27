@@ -1,4 +1,5 @@
 import {test, expect, request} from '@playwright/test'
+import searchTerms from '../../test-data/searchTerms.json'
  
 
 test.describe("Products API", () => {
@@ -19,6 +20,28 @@ test.describe("Products API", () => {
     expect(responseBody.products[0].name).toEqual("Blue Top")//checks 1st item's name value in products list
 
     })
+
+    //data driven test part
+    for(const search of searchTerms){
+        test(`should search for a product: ${search.term}`, async ({request}) => {
+            const response = await request.post('/api/searchProduct', {
+                form: {
+                    'search_product': search.term
+                }
+            })//post req end
+            expect(response.status()).toBe(200);
+            const responseBody = await response.json();
+
+            for (const product of responseBody.products) {
+             expect(product.name.toLowerCase()).toContain(search.term);
+            }
+
+        })//test end 
+    } //for of end
+
+
+
+
 
     test.only('should search product with request param and get totalPrice', async ({request}) => {
 
