@@ -22,5 +22,28 @@ test.describe("Products API", () => {
 
     })
 
+    test.only('should search product with request param and get totalPrice', async ({request}) => {
+
+    const data =  {
+    'search_product': 'top'
+     }
+
+    const response = await request.post(`${baseUrl}/api/searchProduct`, {
+      form: data,
+    });
+
+    const asd = await response.json();
+
+    let totalPrice = 0;
+
+    await asd.products.forEach( (x: { price: any; }) => {
+       const eachPrice = +x.price.slice(3)
+        totalPrice+= eachPrice;
+    })
+
+    console.log(totalPrice);
+
+    })
+
 
 })
