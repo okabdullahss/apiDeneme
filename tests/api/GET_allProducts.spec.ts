@@ -33,7 +33,18 @@ test.describe("Products API", () => {
             const responseBody = await response.json();
 
             for (const product of responseBody.products) {
-             expect(product.name.toLowerCase()).toContain(search.term);
+
+                //the term we are searching resides either in product.name or in product.category.category
+                //so we check both of them to see if either one of em contains search_term 
+                const category_name = product.category.category.toLowerCase();
+                const item_name = product.name.toLowerCase();
+ 
+
+                const contains_search_term = item_name.includes(search.term) || category_name.includes(search.term)
+
+                expect(contains_search_term,`Expected name or category to contain ${search.term} but gor:   name: ${item_name}  category: ${category_name}`).toBe(true)
+
+             //expect(product.category.category.toLowerCase()).toContain(search.term);
             }
 
         })//test end 
